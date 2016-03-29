@@ -1,8 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
 {% autoescape off %}
-{% for video in videos %}
-{{ video }}
-{% endfor %}
+    <iframe width="896" height="706" src="https://www.youtube.com/embed/{{ ending }}?autoplay=1" frameborder="0"></iframe>
 {% endautoescape %}
 {% endblock %}
