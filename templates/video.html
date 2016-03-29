@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+{% autoescape off %}
+{% for video in videos %}
+{{ video }}
+{% endfor %}
+{% endautoescape %}
+{% endblock %}
