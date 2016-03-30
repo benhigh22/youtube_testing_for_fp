@@ -9,10 +9,13 @@
 </form>
 <br>
 <br>
-
     <h3>{{ top_five }}</h3>
+<ol>
 {% autoescape off %}
-    <div>{{ scraped_content }}</div>
+    {% for title, href in scraped_content %}
+    <li><a href="{% url 'video_view' href|safe %}">{{ title }}</a></li>
+        <br>
+    {% endfor %}
 {% endautoescape %}
-
+</ol>
 {% endblock %}

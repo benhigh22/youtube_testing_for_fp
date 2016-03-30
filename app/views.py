@@ -1,8 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from django.views.generic import TemplateView
-
-base_url = 'https://www.youtube.com/'
+from urllib.parse import parse_qs
 
 
 class IndexView(TemplateView):
@@ -14,8 +13,8 @@ class IndexView(TemplateView):
         if search_string:
             scraped_content = requests.get("https://www.youtube.com/results?search_query={}+karaoke+version".format(search_string)).content
             clean_data = BeautifulSoup(scraped_content).find_all(class_="yt-lockup-title")
-            context['scraped_content'] = [title for title in clean_data][:5]
-            context['top_five'] = "Your top 5 search results:"
+            context['scraped_content'] = [(song.find("a").get("title"), song.find("a").get("href")) for song in clean_data if not "*" in song.find("a").get("title")][:5]
+            context['top_five'] = "Your Top 5 Search Results:"
         return context
 
 
@@ -24,6 +23,6 @@ class VideoView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        ending = self.request.GET.get('v')
-        context["ending"] = ending
+        url = self.kwargs.get("url")
+        context["ending"] = parse_qs(url[6:]).get("?v")[0]
         return context
