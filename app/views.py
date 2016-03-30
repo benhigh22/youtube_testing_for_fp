@@ -13,8 +13,9 @@ class IndexView(TemplateView):
         search_string = self.request.GET.get('search_string')
         if search_string:
             scraped_content = requests.get("https://www.youtube.com/results?search_query={}+karaoke+version".format(search_string)).content
-            clean_data = BeautifulSoup(scraped_content).find(class_="yt-lockup-title")
-            context['scraped_content'] = clean_data.prettify()
+            clean_data = BeautifulSoup(scraped_content).find_all(class_="yt-lockup-title")
+            context['scraped_content'] = [title for title in clean_data][:5]
+            context['top_five'] = "Your top 5 search results:"
         return context
 
 
